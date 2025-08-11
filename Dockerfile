@@ -30,14 +30,15 @@ COPY --from=build /app/dist ./dist
 # Making our 'kek' user an owner of /app folder
 RUN chown -R kek:testinggroup /app
 
-# Switching to the our user for runtime
-USER kek
-
 
 # Using tini as an entrypoint to properly handle SIGTERM and reap zombie processes
 ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
+
+# Switching to the our user for runtime
+USER kek
+
 ENTRYPOINT ["/tini", "--"]
 
 # Running our backend app 
